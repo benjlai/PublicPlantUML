@@ -1,0 +1,22 @@
+@startuml
+title Option 3
+autonumber "<b>[00]"
+
+participant "App" as APP
+participant "Customer Service" as CS
+database "Customer Topic" as CT
+participant "Marketing Server" as MS
+database "Marketing DB" as MDB
+
+
+
+APP -> CS: changeAddress("10 Main St")\ntraceId=001
+CS -\ CT: CustomerEvent(changeAddress, "10 Main St")\ntraceId=001
+APP <-- CS: return OK\ntraceId=001
+
+CT -\ MS: CustomerEvent(changeAddress, "10 Main St"),\ntraceId=001, traceparent=00-001-102-00
+MS -> MDB: save Opportunity ()\ntraceId=001, parent=102, span=203
+
+
+
+@enduml
